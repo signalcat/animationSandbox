@@ -1,9 +1,12 @@
+var redGamePiece, blueGamePiece, yellowGamePiece;
+
 function startGame() {
     myGameArea.start();
-    myGamePiece = new rectComponent(30, 30, "red", 10, 120);
+    blueGamePiece = new rectComponent(80, 80, "blue", 10, 120);
+    redGamePiece = new rectComponent(80, 80, "red", 100, 120);
+    yellowGamePiece = new rectComponent(80, 80, "yellow", 50, 120);
     
 }
-
 
 var myGameArea = {
     canvas: document.createElement("canvas"),
@@ -34,7 +37,17 @@ function rectComponent(width, height, color, x, y) {
 
 function updateGameArea() {
 	myGameArea.clear();
-	myGamePiece.update();	
+	
+	redGamePiece.x += 1;
+  yellowGamePiece.x += 1;
+  yellowGamePiece.y += 1;
+  blueGamePiece.x += 1;
+  blueGamePiece.y -= 1;
+
+	blueGamePiece.update();
+	redGamePiece.update();	
+	yellowGamePiece.update();
+
 }
 
 
