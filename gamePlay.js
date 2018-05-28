@@ -7,9 +7,6 @@ function startGame() {
     redGamePiece = new rectComponent(80, 80, "red", 100, 120);
     yellowGamePiece = new rectComponent(80, 80, "yellow", 50, 120);
     
-    myGamePieces.push(blueGamePiece);
-    myGamePieces.push(redGamePiece);
-    myGamePieces.push(yellowGamePiece);
 }
 
 var myGameArea = {
@@ -36,6 +33,7 @@ function rectComponent(width, height, color, x, y) {
 		ctx.fillStyle = color;
 		ctx.fillRect(this.x, this.y, this.width, this.height);	
 	}
+	myGamePieces.push(this);
 }
 
 
