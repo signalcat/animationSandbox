@@ -1,4 +1,5 @@
 var redGamePiece, blueGamePiece, yellowGamePiece;
+var myGamePieces = []
 
 function startGame() {
     myGameArea.start();
@@ -6,6 +7,9 @@ function startGame() {
     redGamePiece = new rectComponent(80, 80, "red", 100, 120);
     yellowGamePiece = new rectComponent(80, 80, "yellow", 50, 120);
     
+    myGamePieces.push(blueGamePiece);
+    myGamePieces.push(redGamePiece);
+    myGamePieces.push(yellowGamePiece);
 }
 
 var myGameArea = {
@@ -43,11 +47,8 @@ function updateGameArea() {
   yellowGamePiece.y += 1;
   blueGamePiece.x += 1;
   blueGamePiece.y -= 1;
-
-	blueGamePiece.update();
-	redGamePiece.update();	
-	yellowGamePiece.update();
-
+  for (let i = 0; i < myGamePieces.length; i++)
+	   myGamePieces[i].update();
 }
 
 
