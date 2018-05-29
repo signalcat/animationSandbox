@@ -1,12 +1,8 @@
-var redGamePiece, blueGamePiece, yellowGamePiece;
-var myGamePieces = []
+var myGamePiece;
 
 function startGame() {
     myGameArea.start();
-    blueGamePiece = new rectComponent(80, 80, "blue", 10, 120);
-    redGamePiece = new rectComponent(80, 80, "red", 100, 120);
-    yellowGamePiece = new rectComponent(80, 80, "yellow", 50, 120);
-    
+    myGamePiece = new rectComponent(30, 30, "red", 10, 120);
 }
 
 var myGameArea = {
@@ -26,6 +22,8 @@ var myGameArea = {
 function rectComponent(width, height, color, x, y) {
 	this.width = width;
 	this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;
 	this.x = x;
 	this.y = y;
 	this.update = function() {
@@ -33,20 +31,28 @@ function rectComponent(width, height, color, x, y) {
 		ctx.fillStyle = color;
 		ctx.fillRect(this.x, this.y, this.width, this.height);	
 	}
-	myGamePieces.push(this);
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+    }
 }
 
 
 function updateGameArea() {
-	myGameArea.clear();
-	
-	redGamePiece.x += 1;
-  yellowGamePiece.x += 1;
-  yellowGamePiece.y += 1;
-  blueGamePiece.x += 1;
-  blueGamePiece.y -= 1;
-  for (let i = 0; i < myGamePieces.length; i++)
-	   myGamePieces[i].update();
+    myGameArea.clear();
+    myGamePiece.newPos();
+    myGamePiece.update();
 }
 
-
+function moveup() {
+    myGamePiece.speedY -= 1;
+}
+function movedown() {
+    myGamePiece.speedY += 1;
+}
+function moveleft() {
+    myGamePiece.speedX -= 1;
+}
+function moveright() {
+    myGamePiece.speedX += 1;
+}
