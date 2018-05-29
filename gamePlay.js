@@ -56,3 +56,8 @@ function moveleft() {
 function moveright() {
     myGamePiece.speedX += 1;
 }
+
+function stopMove() {
+    myGamePiece.speedX = 0;
+    myGamePiece.speedY = 0;
+}
