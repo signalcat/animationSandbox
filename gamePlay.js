@@ -48,12 +48,10 @@ var myGameArea = {
             }
         });
         window.addEventListener('mousemove', function(e){
-          console.log("Mouse: " +e.pageX + " " + e.pageY);
           myGameArea.x = e.pageX;
           myGameArea.y = e.pageY;
         })
         window.addEventListener('touchmove', function(e) {
-          console.log("Touch: " +e.touches[0].pageX + " " + e.touches[0].pageY);
           myGameArea.x = e.touches[0].pageX - getOffsetLeft(myGameArea.canvas);
           myGameArea.y = e.touches[0].pageY - getOffsetTop(myGameArea.canvas);
         })
