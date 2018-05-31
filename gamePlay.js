@@ -5,6 +5,30 @@ function startGame() {
     myGamePiece = new rectComponent(30, 30, "red", 10, 120);
 }
 
+function getOffsetLeft( elem )
+{
+    var offsetLeft = 0;
+    do {
+      if ( !isNaN( elem.offsetLeft ) )
+      {
+          offsetLeft += elem.offsetLeft;
+      }
+    } while( elem = elem.offsetParent );
+    return offsetLeft;
+}
+
+function getOffsetTop( elem )
+{
+    var offsetTop = 0;
+    do {
+      if ( !isNaN( elem.offsetTop ) )
+      {
+          offsetTop += elem.offsetTop;
+      }
+    } while( elem = elem.offsetParent );
+    return offsetTop;
+}
+
 var myGameArea = {
     canvas: document.createElement("canvas"),
     start : function() {
@@ -24,12 +48,14 @@ var myGameArea = {
             }
         });
         window.addEventListener('mousemove', function(e){
+          console.log("Mouse: " +e.pageX + " " + e.pageY);
           myGameArea.x = e.pageX;
           myGameArea.y = e.pageY;
         })
         window.addEventListener('touchmove', function(e) {
-          myGameArea.x = e.touches[0].screenX;
-          myGameArea.y = e.touches[0].screenY;
+          console.log("Touch: " +e.touches[0].pageX + " " + e.touches[0].pageY);
+          myGameArea.x = e.touches[0].pageX - getOffsetLeft(myGameArea.canvas);
+          myGameArea.y = e.touches[0].pageY - getOffsetTop(myGameArea.canvas);
         })
     },
     clear : function() {
@@ -70,7 +96,6 @@ function updateGameArea() {
       myGamePiece.x = myGameArea.x;
       myGamePiece.y = myGameArea.y;
     }
-
 
     myGamePiece.update();
 }
