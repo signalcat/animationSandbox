@@ -47,10 +47,10 @@ var myGameArea = {
                 myGameArea.keys[e.keyCode] = false;
             }
         });
-        window.addEventListener('mousemove', function(e){
-          myGameArea.x = e.pageX;
-          myGameArea.y = e.pageY;
-        })
+        // window.addEventListener('mousemove', function(e){
+        //   myGameArea.x = e.pageX;
+        //   myGameArea.y = e.pageY;
+        // })
         window.addEventListener('touchmove', function(e) {
           myGameArea.x = e.touches[0].pageX - getOffsetLeft(myGameArea.canvas);
           myGameArea.y = e.touches[0].pageY - getOffsetTop(myGameArea.canvas);
