@@ -24,8 +24,10 @@ var myGameArea = {
             }
         });
         window.addEventListener('mousemove', function(e){
-          myGameArea.x = e.pageX;
-          myGameArea.y = e.pageY;
+          if (myGamePiece) {
+            myGamePiece.x = e.pageX;
+            myGamePiece.y = e.pageY;
+          }
         })
     },
     clear : function() {
@@ -61,13 +63,6 @@ function updateGameArea() {
     if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -1; }
     if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 1; }
     myGamePiece.newPos();
-
-    if (myGameArea.x && myGameArea.y) {
-      myGamePiece.x = myGameArea.x;
-      myGamePiece.y = myGameArea.y;
-    }
-
-
     myGamePiece.update();
 }
 
