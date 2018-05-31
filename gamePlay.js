@@ -10,6 +10,7 @@ var myGameArea = {
     start : function() {
         this.canvas.width = 480;
         this.canvas.height = 270;
+        this.canvas.style.cursor = "none";
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGameArea, 20);
@@ -22,6 +23,10 @@ var myGameArea = {
                 myGameArea.keys[e.keyCode] = false;
             }
         });
+        window.addEventListener('mousemove', function(e){
+          myGameArea.x = e.pageX;
+          myGameArea.y = e.pageY;
+        })
     },
     clear : function() {
     	this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
@@ -56,6 +61,13 @@ function updateGameArea() {
     if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -1; }
     if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 1; }
     myGamePiece.newPos();
+
+    if (myGameArea.x && myGameArea.y) {
+      myGamePiece.x = myGameArea.x;
+      myGamePiece.y = myGameArea.y;
+    }
+
+
     myGamePiece.update();
 }
 
