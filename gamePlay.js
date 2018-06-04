@@ -87,6 +87,7 @@ function rectComponent(width, height, color, x, y) {
 		var myright = this.x + (this.width);
 		var mytop = this.y;
 		var mybottom = this.y + (this.height);
+		// TODO: fix the coordinate offset 
 		return ((myGameArea.y <= mybottom) && (myGameArea.y >= mytop)
 			   && (myGameArea.x >= myleft) && (myGameArea.x <= myright));
 	}
