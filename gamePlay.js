@@ -2,7 +2,7 @@ var myGamePiece;
 
 function startGame() {
 
-    
+
     myGamePiece = new rectComponent(30, 30, "red", 10, 120);
 
     myUpBtn = new rectComponent(30,30,"blue",50,10);
@@ -19,10 +19,10 @@ function getOffsetLeft( elem )
 {
     var offsetLeft = 0;
     do {
-      if ( !isNaN( elem.offsetLeft ) )
-      {
-          offsetLeft += elem.offsetLeft;
-      }
+        if ( !isNaN( elem.offsetLeft ) )
+        {
+            offsetLeft += elem.offsetLeft;
+        }
     } while( elem = elem.offsetParent );
     return offsetLeft;
 }
@@ -31,84 +31,83 @@ function getOffsetTop( elem )
 {
     var offsetTop = 0;
     do {
-      if ( !isNaN( elem.offsetTop ) )
-      {
-          offsetTop += elem.offsetTop;
-      }
+        if ( !isNaN( elem.offsetTop ) )
+        {
+            offsetTop += elem.offsetTop;
+        }
     } while( elem = elem.offsetParent );
     return offsetTop;
 }
 
 var myGameArea = {
-    canvas: document.createElement("canvas"),
-    start : function() {
-        this.canvas.width = 480;
-        this.canvas.height = 270;
-        // this.canvas.style.cursor = "none";
-        this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.interval = setInterval(updateGameArea, 20);
-        window.addEventListener('mousedown', function(e){
-        	console.log("mousedown!");
-        	myGameArea.x = e.pageX - getOffsetLeft(myGameArea.canvas);
-        	myGameArea.y = e.pageY - getOffsetTop(myGameArea.canvas);
-        })
-        window.addEventListener('mouseup', function(e){
-        	console.log("mouseup!");
-        	myGameArea.x = false;
-        	myGameArea.y = false;
-        })
-        window.addEventListener('touchstart', function(e) {
-        	myGameArea.x = e.pageX;
-        	myGameArea.y = e.pageY;
-        })
-        window.addEventListener('touchend', function(e) {
-        	myGameArea.x = false;
-        	myGameArea.y = false;
-        }) 
-    },
-    clear : function() {
-    	this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
-    }
+canvas: document.createElement("canvas"),
+        start : function() {
+            this.canvas.width = 480;
+            this.canvas.height = 270;
+            // this.canvas.style.cursor = "none";
+            this.context = this.canvas.getContext("2d");
+            document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            this.interval = setInterval(updateGameArea, 20);
+            window.addEventListener('mousedown', function(e){
+                    console.log("mousedown!");
+                    myGameArea.x = e.pageX - getOffsetLeft(myGameArea.canvas);
+                    myGameArea.y = e.pageY - getOffsetTop(myGameArea.canvas);
+                    })
+            window.addEventListener('mouseup', function(e){
+                    console.log("mouseup!");
+                    myGameArea.x = false;
+                    myGameArea.y = false;
+                    })
+            window.addEventListener('touchstart', function(e) {
+                    myGameArea.x = e.pageX;
+                    myGameArea.y = e.pageY;
+                    })
+            window.addEventListener('touchend', function(e) {
+                    myGameArea.x = false;
+                    myGameArea.y = false;
+                    }) 
+        },
+clear : function() {
+            this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
+        }
 }
 
 function rectComponent(width, height, color, x, y) {
-	this.width = width;
-	this.height = height;
-	this.x = x;
-	this.y = y;
-	this.update = function() {
-		ctx = myGameArea.context;
-		ctx.fillStyle = color;
-		ctx.fillRect(this.x, this.y, this.width, this.height);	
-	}
-	this.clicked = function() {
-		var myleft = this.x;
-		var myright = this.x + (this.width);
-		var mytop = this.y;
-		var mybottom = this.y + (this.height);
-		// TODO: fix the coordinate offset 
-		return ((myGameArea.y <= mybottom) && (myGameArea.y >= mytop)
-			   && (myGameArea.x >= myleft) && (myGameArea.x <= myright));
-	}
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+    this.update = function() {
+        ctx = myGameArea.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);  
+    }
+    this.clicked = function() {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        return ((myGameArea.y <= mybottom) && (myGameArea.y >= mytop)
+                && (myGameArea.x >= myleft) && (myGameArea.x <= myright));
+    }
 }
 
 
 function updateGameArea() {
     myGameArea.clear();
     if (myGameArea.x && myGameArea.y) {
-    	if (myUpBtn.clicked()) {
-    		myGamePiece.y -= 1;
-    	}
-    	if (myDownBtn.clicked()) {
-    		myGamePiece.y += 1;
-    	}
-    	if (myLeftBtn.clicked()) {
-    		myGamePiece.x -= 1;
-    	}
-    	if (myRightBtn.clicked()) {
-    		myGamePiece.x += 1;
-    	}
+        if (myUpBtn.clicked()) {
+            myGamePiece.y -= 1;
+        }
+        if (myDownBtn.clicked()) {
+            myGamePiece.y += 1;
+        }
+        if (myLeftBtn.clicked()) {
+            myGamePiece.x -= 1;
+        }
+        if (myRightBtn.clicked()) {
+            myGamePiece.x += 1;
+        }
     }
     myUpBtn.update();
     myDownBtn.update();
