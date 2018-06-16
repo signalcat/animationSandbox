@@ -50,8 +50,8 @@ var myGameArea = {
         this.interval = setInterval(updateGameArea, 20);
         window.addEventListener('mousedown', function(e){
         	console.log("mousedown!");
-        	myGameArea.x = e.pageX;
-        	myGameArea.y = e.pageY;
+        	myGameArea.x = e.pageX - getOffsetLeft(myGameArea.canvas);
+        	myGameArea.y = e.pageY - getOffsetTop(myGameArea.canvas);
         })
         window.addEventListener('mouseup', function(e){
         	console.log("mouseup!");
