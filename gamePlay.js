@@ -77,6 +77,9 @@ function rectComponent(width, height, color, x, y) {
     this.height = height;
     this.x = x;
     this.y = y;
+    this.speedX = 0;
+    this.speedY = 0;
+
     this.update = function() {
         ctx = myGameArea.context;
         ctx.fillStyle = color;
@@ -90,28 +93,34 @@ function rectComponent(width, height, color, x, y) {
         return ((myGameArea.y <= mybottom) && (myGameArea.y >= mytop)
                 && (myGameArea.x >= myleft) && (myGameArea.x <= myright));
     }
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+    }
 }
+
 
 
 function updateGameArea() {
     myGameArea.clear();
-    if (myGameArea.x && myGameArea.y) {
-        if (myUpBtn.clicked()) {
-            myGamePiece.y -= 1;
-        }
-        if (myDownBtn.clicked()) {
-            myGamePiece.y += 1;
-        }
-        if (myLeftBtn.clicked()) {
-            myGamePiece.x -= 1;
-        }
-        if (myRightBtn.clicked()) {
-            myGamePiece.x += 1;
-        }
-    }
-    myUpBtn.update();
-    myDownBtn.update();
-    myLeftBtn.update();
-    myRightBtn.update();
+    myGamePiece.newPos();
     myGamePiece.update();
+}
+
+function moveup() {
+    myGamePiece.speedY -= 1;
+}
+function movedown() {
+    myGamePiece.speedY += 1;
+}
+function moveleft() {
+    myGamePiece.speedX -= 1;
+}
+function moveright() {
+    myGamePiece.speedX += 1;
+}
+
+function stopMove() {
+    myGamePiece.speedX = 0;
+    myGamePiece.speedY = 0;
 }
