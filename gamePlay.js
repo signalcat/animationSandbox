@@ -1,15 +1,11 @@
 var myGamePiece;
+var myObstacle;
 
 function startGame() {
 
 
     myGamePiece = new rectComponent(30, 30, "red", 10, 120);
-
-    myUpBtn = new rectComponent(30,30,"blue",50,10);
-    myDownBtn = new rectComponent(30,30,"blue",50,70);
-    myLeftBtn = new rectComponent(30,30,"blue",20,40);
-    myRightBtn = new rectComponent(30,30,"blue",80,40);
-
+    myObstacle = new rectComponent(10, 200, "green", 300, 120);
     myGameArea.start();
 
 
@@ -67,8 +63,12 @@ canvas: document.createElement("canvas"),
                     myGameArea.y = false;
                     }) 
         },
-clear : function() {
-            this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
+        clear : function() {
+                    this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
+        },
+
+        stop : function() {
+            clearInterval(this.interval);
         }
 }
 
@@ -97,14 +97,35 @@ function rectComponent(width, height, color, x, y) {
         this.x += this.speedX;
         this.y += this.speedY;
     }
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) ||
+               (mytop > otherbottom) ||
+               (myright < otherleft) ||
+               (myleft > otherright)) {
+           crash = false;
+        }
+        return crash;
+    }
 }
 
-
-
 function updateGameArea() {
-    myGameArea.clear();
-    myGamePiece.newPos();
-    myGamePiece.update();
+    if (myGamePiece.crashWith(myObstacle)) {
+        myGameArea.stop();
+    } else {
+        myGameArea.clear();
+        myGamePiece.newPos();
+        myGamePiece.update();
+        myObstacle.update();
+    }
 }
 
 function moveup() {
