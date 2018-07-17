@@ -136,10 +136,18 @@ function updateGameArea() {
     // create a new obstacle
     if (myGameArea.frameNo == 1 || myGameArea.everyinterval(150)) {
         x = myGameArea.canvas.width;
-        y = myGameArea.canvas.height - 200;
-        myObstacles.push(new rectComponent(10, 200, "green", x, y));
+        y = myGameArea.canvas.height;
+        minHeight = 20;
+        maxHeight = 200;
+        height = Math.floor(Math.random()*(maxHeight - minHeight + 1) + minHeight);
+        minGap = 50;
+        maxGap = 200;
+        gap = Math.floor(Math.random()*(maxGap - minGap + 1) + minGap);
+        myObstacles.push(new rectComponent(10, height, "green", x, 0));
+        myObstacles.push(new rectComponent(10, y - height - gap, "green", x, height + gap));
     }
 
+    // Reduce unused previous obstacles
     while (myObstacles.length > 0 && myObstacles[0].x < 0) {
         myObstacles.shift();
     }
