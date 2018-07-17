@@ -1,5 +1,5 @@
 var myGamePiece;
-var myObstacle;
+var myObstacles = [];
 
 function startGame() {
 
@@ -42,6 +42,7 @@ canvas: document.createElement("canvas"),
             this.canvas.height = 270;
             // this.canvas.style.cursor = "none";
             this.context = this.canvas.getContext("2d");
+            this.frameNo = 0;
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
             this.interval = setInterval(updateGameArea, 20);
             window.addEventListener('mousedown', function(e){
@@ -69,6 +70,10 @@ canvas: document.createElement("canvas"),
 
         stop : function() {
             clearInterval(this.interval);
+        },
+
+        everyinterval : function(n) {
+            return ((this.frameNo / n) % 1 == 0);
         }
 }
 
@@ -106,26 +111,41 @@ function rectComponent(width, height, color, x, y) {
         var otherright = otherobj.x + (otherobj.width);
         var othertop = otherobj.y;
         var otherbottom = otherobj.y + (otherobj.height);
-        var crash = true;
-        if ((mybottom < othertop) ||
+        return !((mybottom < othertop) ||
                (mytop > otherbottom) ||
                (myright < otherleft) ||
-               (myleft > otherright)) {
-           crash = false;
-        }
-        return crash;
+               (myleft > otherright));
     }
 }
 
+
+
 function updateGameArea() {
-    if (myGamePiece.crashWith(myObstacle)) {
-        myGameArea.stop();
-    } else {
-        myGameArea.clear();
-        myGamePiece.newPos();
-        myGamePiece.update();
-        myObstacle.update();
+
+    for (i = 0; i < myObstacles.length; i += 1) {
+        if (myGamePiece.crashWith(myObstacles[i])) {
+            myGameArea.stop();
+            return;
+        }
     }
+    
+    myGameArea.clear();
+    myGameArea.frameNo += 1;
+    
+    // At the first frame or every 150(frame) * 20 ms (approx.),
+    // create a new obstacle
+    if (myGameArea.frameNo == 1 || myGameArea.everyinterval(150)) {
+        x = myGameArea.canvas.width;
+        y = myGameArea.canvas.height - 200;
+        myObstacles.push(new rectComponent(10, 200, "green", x, y));
+    }
+    for (i = 0; i < myObstacles.length; i += 1) {
+        myObstacles[i].x += -1;
+        myObstacles[i].update();
+    }
+    
+    myGamePiece.newPos();
+    myGamePiece.update();
 }
 
 function moveup() {
