@@ -10,13 +10,22 @@
         <script src="gamePlay.js" type="text/javascript" charset="utf-8" async defer></script>
     </head>
     <body onload="startGame();">
-        <button onmousedown="moveup()" onmouseup="stopMove()"
-            ontouchstart="moveup()">UP</button>
-        <button onmousedown="movedown()" onmouseup="stopMove()"
-            ontouchstart="movedown()">DOWN</button>
-        <button onmousedown="moveleft()" onmouseup="stopMove()"
-            ontouchstart="moveleft()">LEFT</button>
-        <button onmousedown="moveright()" onmouseup="stopMove()"
-            ontouchstart="moveright()">RIGHT</button>
+        <br />
+        <div id="buttons">
+            <div id="upButton">
+                <button onmousedown="moveup()" onmouseup="stopMove()"
+                ontouchstart="moveup()">UP</button>
+            </div>
+            <div id="leftRightButton">
+                <button onmousedown="moveleft()" onmouseup="stopMove()"
+                ontouchstart="moveleft()">LEFT</button>
+                <button onmousedown="moveright()" onmouseup="stopMove()"
+                ontouchstart="moveright()">RIGHT</button>
+            </div>
+            <div id="downButton">
+                <button onmousedown="movedown()" onmouseup="stopMove()"
+                ontouchstart="movedown()">DOWN</button>
+            </div>
+        </div>   
     </body>
 </html>
