@@ -139,6 +139,11 @@ function updateGameArea() {
         y = myGameArea.canvas.height - 200;
         myObstacles.push(new rectComponent(10, 200, "green", x, y));
     }
+
+    while (myObstacles.length > 0 && myObstacles[0].x < 0) {
+        myObstacles.shift();
+    }
+
     for (i = 0; i < myObstacles.length; i += 1) {
         myObstacles[i].x += -1;
         myObstacles[i].update();
