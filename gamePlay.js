@@ -5,7 +5,9 @@ var myScore;
 function startGame() {
 
 
-    myGamePiece = new rectComponent(30, 30, "red", 10, 120);
+    myGamePiece = new imageComponent(30, 30, "smiley.gif", 10, 120);
+//    myGamePiece = new rectComponent(30, 30, "red", 10, 120);
+
     myScore = new textComponent("30px", "Consolas", "black", 280, 40);
     myGameArea.start();
 
@@ -87,15 +89,14 @@ function textComponent(fontSize, fontName, color, x, y) {
     this.fontName = fontName;
 
     this.update = function() {
+        var ctx = myGameArea.context;
         ctx.font = this.fontSize + " " + this.fontName;
         ctx.fillStyle = color;
         ctx.fillText(this.text, this.x, this.y);
     }
 }
 
-
-function rectComponent(width, height, color, x, y) {
-
+function gameComponent(width, height, x, y) {
     this.width = width;
     this.height = height;
     this.x = x;
@@ -103,11 +104,6 @@ function rectComponent(width, height, color, x, y) {
     this.speedX = 0;
     this.speedY = 0;
 
-    this.update = function() {
-        ctx = myGameArea.context;
-        ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-    }
     this.clicked = function() {
         var myleft = this.x;
         var myright = this.x + (this.width);
@@ -136,10 +132,30 @@ function rectComponent(width, height, color, x, y) {
     }
 }
 
+function imageComponent(width, height, image, x, y) {
+    gameComponent.call(this, width, height, x, y);
+    this.image = new Image();
+    this.image.src = image;
 
+    this.update = function() {
+        var ctx = myGameArea.context;
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+}
+imageComponent.prototype = new gameComponent();
+
+
+function rectComponent(width, height, color, x, y) {
+    gameComponent.call(this, width, height, x, y);
+    this.update = function() {
+        var ctx = myGameArea.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+}
+rectComponent.prototype = new gameComponent();
 
 function updateGameArea() {
-
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
             myGameArea.stop();
