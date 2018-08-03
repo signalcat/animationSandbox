@@ -63,7 +63,7 @@ canvas: document.createElement("canvas"),
             window.addEventListener('touchend', function(e) {
                     myGameArea.x = false;
                     myGameArea.y = false;
-                    }) 
+                    })
         },
         clear : function() {
                     this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
@@ -90,7 +90,7 @@ function textComponent(fontSize, fontName, color, x, y) {
         ctx.fillText(this.text, this.x, this.y);
     }
 }
-            
+
 
 function rectComponent(width, height, color, x, y) {
 
@@ -104,7 +104,7 @@ function rectComponent(width, height, color, x, y) {
     this.update = function() {
         ctx = myGameArea.context;
         ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);    
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
     this.clicked = function() {
         var myleft = this.x;
@@ -144,10 +144,10 @@ function updateGameArea() {
             return;
         }
     }
-    
+
     myGameArea.clear();
     myGameArea.frameNo += 1;
-    
+
     // At the first frame or every 150(frame) * 20 ms (approx.),
     // create a new obstacle
     if (myGameArea.frameNo == 1 || myGameArea.everyinterval(150)) {
@@ -172,7 +172,7 @@ function updateGameArea() {
         myObstacles[i].x += -1;
         myObstacles[i].update();
     }
-    
+
     myScore.text = "SCORE: " + myGameArea.frameNo;
     myScore.update();
 
