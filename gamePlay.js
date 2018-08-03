@@ -1,11 +1,12 @@
 var myGamePiece;
 var myObstacles = [];
+var myScore;
 
 function startGame() {
 
 
     myGamePiece = new rectComponent(30, 30, "red", 10, 120);
-    myObstacle = new rectComponent(10, 200, "green", 300, 120);
+    myScore = new textComponent("30px", "Consolas", "black", 280, 40);
     myGameArea.start();
 
 
@@ -77,7 +78,22 @@ canvas: document.createElement("canvas"),
         }
 }
 
+function textComponent(fontSize, fontName, color, x, y) {
+    this.x = x;
+    this.y = y;
+    this.speedX = 0;
+    this.speedY = 0;
+
+    this.update = function() {
+        ctx.font = this.fontSize + " " + this.fontName;
+        ctx.fillStyle = color;
+        ctx.fillText(this.text, this.x, this.y);
+    }
+}
+            
+
 function rectComponent(width, height, color, x, y) {
+
     this.width = width;
     this.height = height;
     this.x = x;
@@ -88,7 +104,7 @@ function rectComponent(width, height, color, x, y) {
     this.update = function() {
         ctx = myGameArea.context;
         ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);	
+        ctx.fillRect(this.x, this.y, this.width, this.height);    
     }
     this.clicked = function() {
         var myleft = this.x;
@@ -157,6 +173,9 @@ function updateGameArea() {
         myObstacles[i].update();
     }
     
+    myScore.text = "SCORE: " + myGameArea.frameNo;
+    myScore.update();
+
     myGamePiece.newPos();
     myGamePiece.update();
 }
