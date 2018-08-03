@@ -83,6 +83,8 @@ function textComponent(fontSize, fontName, color, x, y) {
     this.y = y;
     this.speedX = 0;
     this.speedY = 0;
+    this.fontSize = fontSize;
+    this.fontName = fontName;
 
     this.update = function() {
         ctx.font = this.fontSize + " " + this.fontName;
