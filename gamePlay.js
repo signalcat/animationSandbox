@@ -149,7 +149,6 @@ function imageComponent(width, height, image, x, y) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }
-imageComponent.prototype = new gameComponent();
 
 function backgroundComponent(width, height, image, x, y) {
 	imageComponent.call(this, width, height, image, x, y);
@@ -169,8 +168,6 @@ function backgroundComponent(width, height, image, x, y) {
 	}
 }
 
-backgroundComponent.prototype = new imageComponent();
-
 function rectComponent(width, height, color, x, y) {
     gameComponent.call(this, width, height, x, y);
     this.update = function() {
@@ -179,7 +176,6 @@ function rectComponent(width, height, color, x, y) {
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
-rectComponent.prototype = new gameComponent();
 
 function updateGameArea() {
     for (i = 0; i < myObstacles.length; i += 1) {
