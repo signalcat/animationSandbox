@@ -73,6 +73,11 @@ canvas: document.createElement("canvas"),
 
         stop : function() {
             clearInterval(this.interval);
+            myGamePiece.image.src = "died.jpeg";
+            myGamePiece.image.onload = function() {
+                myGamePiece.update();
+                this.onload = null;
+            }
         },
 
         everyinterval : function(n) {
@@ -198,20 +203,17 @@ function updateGameArea() {
     myGamePiece.update();
 }
 
-function moveup() {
-    myGamePiece.speedY -= 1;
-}
-function movedown() {
-    myGamePiece.speedY += 1;
-}
-function moveleft() {
-    myGamePiece.speedX -= 1;
-}
-function moveright() {
-    myGamePiece.speedX += 1;
+function move(dir) {
+    console.log("Move called!");
+    myGamePiece.image.src = "angry.gif";
+    if (dir == "up" )myGamePiece.speedY -= 1;
+    if (dir == "down" )myGamePiece.speedY += 1;
+    if (dir == "left" )myGamePiece.speedX -= 1;
+    if (dir == "right" )myGamePiece.speedX += 1;
 }
 
 function stopMove() {
+    myGamePiece.image.src = "smiley.gif";
     myGamePiece.speedX = 0;
     myGamePiece.speedY = 0;
 }
