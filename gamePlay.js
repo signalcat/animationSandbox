@@ -2,18 +2,18 @@ var myGamePiece;
 var myObstacles = [];
 var myScore;
 var myBackground;
+var crashSound;
+var bgMusic;
 
 function startGame() {
-
-
     myGamePiece = new imageComponent(30, 30, "smiley.gif", 10, 120);
-
-    myScore = new textComponent("30px", "Consolas", "black", 280, 40);
-    myGameArea.start();
-
     myBackground = new backgroundComponent(656, 270, "bg.png", 0, 0);
-
-
+    myScore = new textComponent("30px", "Consolas", "black", 280, 40);
+    crashSound = new sound("crashSound.mp3");
+    bgMusic = new sound("backgroundMusic.wav");
+    bgMusic.play();
+    bgMusic.sound.setAttribute("loop", "true");
+    myGameArea.start();
 }
 
 function getOffsetLeft( elem )
@@ -163,8 +163,8 @@ function backgroundComponent(width, height, image, x, y) {
 	this.newPos = function() {
 		this.parentNewPos();
 		if (this.x == -(this.width)) {
-                this.x = 0;
-     }
+      this.x = 0;
+    }
 	}
 }
 
@@ -180,14 +180,14 @@ function rectComponent(width, height, color, x, y) {
 function updateGameArea() {
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
-            myGameArea.stop();
-            return;
+        	crashSound.play();
+          myGameArea.stop();
+          return;
         }
     }
 
     myGameArea.clear();
     myBackground.speedX = -1;
-
     myGameArea.frameNo += 1;
 
     // At the first frame or every 150(frame) * 20 ms (approx.),
@@ -239,4 +239,19 @@ function stopMove() {
     myGamePiece.image.src = "smiley.gif";
     myGamePiece.speedX = 0;
     myGamePiece.speedY = 0;
+}
+
+function sound(src) {
+	this.sound = document.createElement("audio");
+	this.sound.src = src;
+	this.sound.setAttribute("preload", "auto");
+	this.sound.setAttribute("controls", "none");
+	this.sound.style.display = "none";
+	document.body.appendChild(this.sound);
+	this.play = function() {
+		this.sound.play();
+	}
+	this.stop = function() {
+		this.sound.pause();
+	}
 }
