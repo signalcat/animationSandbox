@@ -1,15 +1,17 @@
 var myGamePiece;
 var myObstacles = [];
 var myScore;
+var myBackground;
 
 function startGame() {
 
 
     myGamePiece = new imageComponent(30, 30, "smiley.gif", 10, 120);
-//    myGamePiece = new rectComponent(30, 30, "red", 10, 120);
 
     myScore = new textComponent("30px", "Consolas", "black", 280, 40);
     myGameArea.start();
+
+    myBackground = new backgroundComponent(656, 270, "bg.png", 0, 0);
 
 
 }
@@ -149,6 +151,25 @@ function imageComponent(width, height, image, x, y) {
 }
 imageComponent.prototype = new gameComponent();
 
+function backgroundComponent(width, height, image, x, y) {
+	imageComponent.call(this, width, height, image, x, y);
+	this.parentUpdate = this.update;
+	this.update = function() {
+		this.parentUpdate();
+		ctx = myGameArea.context;
+		ctx.drawImage(this.image, 
+                this.x + this.width, this.y, this.width, this.height);
+	}
+	this.parentNewPos = this.newPos;
+	this.newPos = function() {
+		this.parentNewPos();
+		if (this.x == -(this.width)) {
+                this.x = 0;
+     }
+	}
+}
+
+backgroundComponent.prototype = new imageComponent();
 
 function rectComponent(width, height, color, x, y) {
     gameComponent.call(this, width, height, x, y);
@@ -169,6 +190,8 @@ function updateGameArea() {
     }
 
     myGameArea.clear();
+    myBackground.speedX = -1;
+
     myGameArea.frameNo += 1;
 
     // At the first frame or every 150(frame) * 20 ms (approx.),
@@ -186,6 +209,10 @@ function updateGameArea() {
         myObstacles.push(new rectComponent(10, y - height - gap, "green", x, height + gap));
     }
 
+    // Render background at the bottom
+    myBackground.newPos();
+    myBackground.update();
+
     // Reduce unused previous obstacles
     while (myObstacles.length > 0 && myObstacles[0].x < 0) {
         myObstacles.shift();
@@ -198,9 +225,9 @@ function updateGameArea() {
 
     myScore.text = "SCORE: " + myGameArea.frameNo;
     myScore.update();
-
     myGamePiece.newPos();
     myGamePiece.update();
+
 }
 
 function move(dir) {
