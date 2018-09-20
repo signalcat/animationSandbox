@@ -10,6 +10,7 @@ function startGame() {
     // Only myGamePiece is affected by gravity; it is affected regardless of its type.
     myGamePiece.gravity = 0.05;
     myGamePiece.gravitySpeed = 0;
+    myGamePiece.bounce = 0.6;
     myGamePiece.newPos = function() {
         //if (this.gravitySpeed <= 0.5) {
             this.gravitySpeed += this.gravity;
@@ -22,6 +23,7 @@ function startGame() {
         var rockbottom = myGameArea.canvas.height - this.height;
         if (this.y > rockbottom) {
             this.y = rockbottom;
+            this.gravitySpeed = -(this.gravitySpeed * this.bounce);
         }
     }
 
