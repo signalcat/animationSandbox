@@ -8,25 +8,16 @@ var bgMusic;
 function startGame() {
     myGamePiece = new imageComponent(30, 30, "smiley.gif", 10, 120);
     // Only myGamePiece is affected by gravity; it is affected regardless of its type.
-    myGamePiece.gravity = 0.05;
-    myGamePiece.gravitySpeed = 0;
     myGamePiece.bounce = 0.6;
     myGamePiece.angle = 0;
+    myGamePiece.moveAngle = 1;
+    myGamePiece.speed = 1;
     myGamePiece.newPos = function() {
-        //if (this.gravitySpeed <= 0.5) {
-            this.gravitySpeed += this.gravity;
-        //}
-        this.x += this.speedX;
-        this.y += this.speedY + this.gravitySpeed; 
-        this.hitBottom();
+        this.angle += this.moveAngle * Math.PI / 180;
+        this.x += this.speed * Math.sin(this.angle);
+        this.y += this.speed * Math.cos(this.angle);
     };
-    myGamePiece.hitBottom = function() {
-        var rockbottom = myGameArea.canvas.height - this.height;
-        if (this.y > rockbottom) {
-            this.y = rockbottom;
-            this.gravitySpeed = -(this.gravitySpeed * this.bounce);
-        }
-    }
+
     myGamePiece.update = function() {
     	ctx = myGameArea.context;
     	ctx.save();
@@ -215,7 +206,6 @@ function updateGameArea() {
         }
     }
 
-    myGamePiece.angle += 1 * Math.PI / 180;
     myGameArea.clear();
     myBackground.speedX = -1;
     myGameArea.frameNo += 1;
@@ -263,11 +253,6 @@ function move(dir) {
     if (dir == "down" )myGamePiece.speedY += 1;
     if (dir == "left" )myGamePiece.speedX -= 1;
     if (dir == "right" )myGamePiece.speedX += 1;
-}
-
-function accelerate(n) {
-		myGamePiece.gravity = n;
-		console.log(n);
 }
 
 function stopMove() {
