@@ -11,6 +11,7 @@ function startGame() {
     myGamePiece.gravity = 0.05;
     myGamePiece.gravitySpeed = 0;
     myGamePiece.bounce = 0.6;
+    myGamePiece.angle = 0;
     myGamePiece.newPos = function() {
         //if (this.gravitySpeed <= 0.5) {
             this.gravitySpeed += this.gravity;
@@ -25,6 +26,14 @@ function startGame() {
             this.y = rockbottom;
             this.gravitySpeed = -(this.gravitySpeed * this.bounce);
         }
+    }
+    myGamePiece.update = function() {
+    	ctx = myGameArea.context;
+    	ctx.save();
+    	ctx.translate(this.x, this.y);
+    	ctx.rotate(this.angle);
+    	ctx.drawImage(this.image, this.width / -2, this.height / -2, this.width, this.height);
+    	ctx.restore();
     }
 
     myBackground = new backgroundComponent(656, 270, "bg.png", 0, 0);
@@ -206,6 +215,7 @@ function updateGameArea() {
         }
     }
 
+    myGamePiece.angle += 1 * Math.PI / 180;
     myGameArea.clear();
     myBackground.speedX = -1;
     myGameArea.frameNo += 1;
