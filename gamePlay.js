@@ -7,6 +7,24 @@ var bgMusic;
 
 function startGame() {
     myGamePiece = new imageComponent(30, 30, "smiley.gif", 10, 120);
+    // Only myGamePiece is affected by gravity; it is affected regardless of its type.
+    myGamePiece.gravity = 0.05;
+    myGamePiece.gravitySpeed = 0;
+    myGamePiece.newPos = function() {
+        //if (this.gravitySpeed <= 0.5) {
+            this.gravitySpeed += this.gravity;
+        //}
+        this.x += this.speedX;
+        this.y += this.speedY + this.gravitySpeed; 
+        this.hitBottom();
+    };
+    myGamePiece.hitBottom = function() {
+        var rockbottom = myGameArea.canvas.height - this.height;
+        if (this.y > rockbottom) {
+            this.y = rockbottom;
+        }
+    }
+
     myBackground = new backgroundComponent(656, 270, "bg.png", 0, 0);
     myScore = new textComponent("30px", "Consolas", "black", 280, 40);
     crashSound = new sound("crashSound.mp3");
@@ -51,12 +69,12 @@ canvas: document.createElement("canvas"),
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
             this.interval = setInterval(updateGameArea, 20);
             window.addEventListener('mousedown', function(e){
-                    console.log("mousedown!");
+                    //console.log("mousedown!");
                     myGameArea.x = e.pageX - getOffsetLeft(myGameArea.canvas);
                     myGameArea.y = e.pageY - getOffsetTop(myGameArea.canvas);
                     })
             window.addEventListener('mouseup', function(e){
-                    console.log("mouseup!");
+                    //console.log("mouseup!");
                     myGameArea.x = false;
                     myGameArea.y = false;
                     })
@@ -151,21 +169,21 @@ function imageComponent(width, height, image, x, y) {
 }
 
 function backgroundComponent(width, height, image, x, y) {
-	imageComponent.call(this, width, height, image, x, y);
-	this.parentUpdate = this.update;
-	this.update = function() {
-		this.parentUpdate();
-		ctx = myGameArea.context;
-		ctx.drawImage(this.image, 
+    imageComponent.call(this, width, height, image, x, y);
+    this.parentUpdate = this.update;
+    this.update = function() {
+        this.parentUpdate();
+        ctx = myGameArea.context;
+        ctx.drawImage(this.image, 
                 this.x + this.width, this.y, this.width, this.height);
-	}
-	this.parentNewPos = this.newPos;
-	this.newPos = function() {
-		this.parentNewPos();
-		if (this.x == -(this.width)) {
+    }
+    this.parentNewPos = this.newPos;
+    this.newPos = function() {
+        this.parentNewPos();
+        if (this.x == -(this.width)) {
       this.x = 0;
     }
-	}
+    }
 }
 
 function rectComponent(width, height, color, x, y) {
@@ -180,7 +198,7 @@ function rectComponent(width, height, color, x, y) {
 function updateGameArea() {
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
-        	crashSound.play();
+            crashSound.play();
           myGameArea.stop();
           return;
         }
@@ -235,6 +253,11 @@ function move(dir) {
     if (dir == "right" )myGamePiece.speedX += 1;
 }
 
+function accelerate(n) {
+		myGamePiece.gravity = n;
+		console.log(n);
+}
+
 function stopMove() {
     myGamePiece.image.src = "smiley.gif";
     myGamePiece.speedX = 0;
@@ -242,16 +265,16 @@ function stopMove() {
 }
 
 function sound(src) {
-	this.sound = document.createElement("audio");
-	this.sound.src = src;
-	this.sound.setAttribute("preload", "auto");
-	this.sound.setAttribute("controls", "none");
-	this.sound.style.display = "none";
-	document.body.appendChild(this.sound);
-	this.play = function() {
-		this.sound.play();
-	}
-	this.stop = function() {
-		this.sound.pause();
-	}
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function() {
+        this.sound.play();
+    }
+    this.stop = function() {
+        this.sound.pause();
+    }
 }
